@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>氣象署 AI 自動化工作坊：Gmail 觸發自動化工作流程</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        @import url('https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@300;400;500;700&display=swap');
+        body { font-family: 'Noto Sans TC', sans-serif; scroll-behavior: smooth; }
+        .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%); }
+        .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
+        pre { tab-size: 4; }
+    </style>
+    <script>
+        tailwind.config = {
+            theme: {
+                extend: {
+                    colors: {
+                        primary: '#0284c7',
+                        secondary: '#0ea5e9',
+                        accent: '#f59e0b',
+                    }
+                }
+            }
+        }
+        
+        function copyCode(buttonId, codeId) {
+            const code = document.getElementById(codeId).innerText;
+            const dummy = document.createElement("textarea");
+            document.body.appendChild(dummy);
+            dummy.value = code;
+            dummy.select();
+            document.execCommand("copy");
+            document.body.removeChild(dummy);
+            
+            const btn = document.getElementById(buttonId);
+            const originalText = btn.innerHTML;
+            btn.innerHTML = '<i class="fa-solid fa-check mr-1"></i> 已複製';
+            btn.classList.add('bg-green-600');
+            btn.classList.remove('bg-gray-700');
+            
+            setTimeout(() => {
+                btn.innerHTML = originalText;
+                btn.classList.remove('bg-green-600');
+                btn.classList.add('bg-gray-700');
+            }, 2000);
+        }
+    </script>
+</head>
+<body class="bg-slate-50 text-slate-800 antialiased">
+
+    <!-- Hero Section -->
+    <header class="gradient-bg text-white py-16 lg:py-24 px-6 shadow-lg relative overflow-hidden">
+        <div class="absolute top-0 left-0 w-full h-full opacity-10 bg-[url('data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSI0MCIgaGVpZ2h0PSI0MCI+CgkJPHBhdGggZD0iTTAgMGg0MHY0MEgwVjB6bTIwIDIwYy01LjUyMyAwLTEwLTMuNDctMTAtNi41UzE0LjQ3NyA3IDIwIDdzMTAgMy40NyAxMCA2LjUtNC40NzcgNi41LTEwIDYuNXoiIGZpbGw9IiNmZmYiIGZpbGwtb3BhY2l0eT0iMSIgZmlsbC1ydWxlPSJldmVub2RkIi8+Cjwvc3ZnPg==')]"></div>
+        <div class="max-w-5xl mx-auto relative z-10">
+            <div class="flex items-center gap-3 mb-4">
+                <span class="bg-accent text-white px-3 py-1 rounded-full text-sm font-bold shadow-sm">內部工作坊</span>
+                <span class="text-blue-100 text-sm"><i class="fa-regular fa-clock"></i> 目標時間：90 分鐘</span>
+            </div>
+            <h1 class="text-4xl lg:text-5xl font-bold leading-tight mb-4">利用免費 AI 工具打造<br><span class="text-yellow-300">「Gmail 觸發自動化工作流程」</span></h1>
+            <p class="text-lg lg:text-xl text-blue-100 max-w-3xl mb-8 leading-relaxed">
+                氣象署導入 Google 生態系後，我們日常的工作流程充滿了優化的機會。今天，我們將結合雲端的 Gemini App 與地端的 Antigravity CLI，打造一套專屬的混合式自動化系統！
+            </p>
+            <a href="#hands-on" class="inline-block bg-white text-primary font-bold py-3 px-8 rounded-full shadow-lg hover:bg-blue-50 transition duration-300 transform hover:-translate-y-1">
+                開始 90 分鐘實作 <i class="fa-solid fa-arrow-right ml-2"></i>
+            </a>
+        </div>
+    </header>
+
+    <!-- Main Content -->
+    <main class="max-w-5xl mx-auto px-6 py-12 space-y-16">
+
+        <!-- 生態系介紹 -->
+        <section id="ecosystem" class="space-y-8">
+            <div class="text-center">
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">我們的 AI 武器庫：雲地結合</h2>
+                <div class="w-24 h-1 bg-primary mx-auto rounded-full"></div>
+                <p class="mt-4 text-slate-600 max-w-2xl mx-auto">突破單一工具的限制，將雲端的廣泛連結與地端的深度運算完美結合。</p>
+            </div>
+
+            <div class="grid grid-cols-1 md:grid-cols-2 gap-8">
+                <!-- 雲端工具卡片 -->
+                <div class="bg-white rounded-2xl shadow-md p-8 border-t-4 border-blue-500 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-blue-100 text-blue-600 rounded-xl flex items-center justify-center text-2xl">
+                            <i class="fa-brands fa-google"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-800">雲端生態與 Gemini</h3>
+                    </div>
+                    <ul class="space-y-4 text-slate-600">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-green-500 mt-1"></i> <div><strong>Gmail & Google Drive：</strong>基礎資料流、文件儲存與交換中心。</div></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-green-500 mt-1"></i> <div><strong>Gemini App 擴充功能：</strong>可直接檢視 Gmail 內容、生成 Google 文件、甚至設定排程定時工作。</div></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-green-500 mt-1"></i> <div><strong>Google Apps Script (GAS)：</strong>作為自動化的黏著劑，將 Sheet 的變更轉化為實際的檔案搬移與通知。</div></li>
+                    </ul>
+                </div>
+
+                <!-- 地端工具卡片 -->
+                <div class="bg-white rounded-2xl shadow-md p-8 border-t-4 border-purple-500 hover:shadow-xl transition-shadow">
+                    <div class="flex items-center gap-4 mb-6">
+                        <div class="w-12 h-12 bg-purple-100 text-purple-600 rounded-xl flex items-center justify-center text-2xl">
+                            <i class="fa-solid fa-laptop-code"></i>
+                        </div>
+                        <h3 class="text-2xl font-bold text-slate-800">地端本機 AI (Antigravity)</h3>
+                    </div>
+                    <ul class="space-y-4 text-slate-600">
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-green-500 mt-1"></i> <div><strong>Google Drive 電腦版：</strong>讓本機可以直接存取、監控雲端硬碟的檔案變更。</div></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-green-500 mt-1"></i> <div><strong>Google Antigravity CLI：</strong>強大的本機免費 AI 工具。可以直接叫 AI 整理資料夾、閱讀目錄內的所有檔案後生成說明。</div></li>
+                        <li class="flex items-start gap-3"><i class="fa-solid fa-check-circle text-green-500 mt-1"></i> <div><strong>領域知識技能 (RAG)：</strong>結合專業資料庫，撰寫特定專案（如：立院回應稿），甚至撰寫網頁並部署。</div></li>
+                    </ul>
+                </div>
+            </div>
+        </section>
+
+        <!-- 架構藍圖 -->
+        <section id="architecture" class="bg-slate-100 rounded-3xl p-8 lg:p-12 shadow-inner">
+            <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">自動化工作流程藍圖</h2>
+            
+            <div class="relative">
+                <!-- 垂直連接線 (電腦版隱藏，手機版顯示) -->
+                <div class="absolute left-6 top-8 bottom-8 w-1 bg-blue-200 md:hidden"></div>
+                
+                <div class="space-y-8">
+                    <!-- Step 1 -->
+                    <div class="relative flex flex-col md:flex-row gap-6 md:items-center">
+                        <div class="hidden md:flex flex-col items-center justify-center z-10 w-16">
+                            <div class="w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">1</div>
+                            <div class="w-1 h-24 bg-blue-200"></div>
+                        </div>
+                        <div class="md:hidden absolute left-0 w-12 h-12 bg-primary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">1</div>
+                        <div class="bg-white p-6 rounded-xl shadow flex-1 ml-16 md:ml-0 border-l-4 border-primary">
+                            <h4 class="text-xl font-bold text-primary mb-2">雲端排程判讀 (Gemini App)</h4>
+                            <p class="text-slate-600">利用 Gemini 手機版/網頁版的「排定的動作」，定時讀取 Gmail 未讀信件，進行分類、摘要，並自動新增一行資料到 Google Sheet 中。</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 2 -->
+                    <div class="relative flex flex-col md:flex-row gap-6 md:items-center">
+                        <div class="hidden md:flex flex-col items-center justify-center z-10 w-16">
+                            <div class="w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">2</div>
+                            <div class="w-1 h-24 bg-blue-200"></div>
+                        </div>
+                        <div class="md:hidden absolute left-0 w-12 h-12 bg-secondary text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">2</div>
+                        <div class="bg-white p-6 rounded-xl shadow flex-1 ml-16 md:ml-0 border-l-4 border-secondary">
+                            <h4 class="text-xl font-bold text-secondary mb-2">事件觸發與檔案調度 (Google Sheet + GAS)</h4>
+                            <p class="text-slate-600">當 Sheet 偵測到新資料寫入（onChange），觸發背景 GAS 腳本，自動在 Google Drive 尋找該信件相關附件，將其搬移到「gmail工作區」，並發送 Email 通知。</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 3 -->
+                    <div class="relative flex flex-col md:flex-row gap-6 md:items-center">
+                        <div class="hidden md:flex flex-col items-center justify-center z-10 w-16">
+                            <div class="w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">3</div>
+                            <div class="w-1 h-24 bg-blue-200"></div>
+                        </div>
+                        <div class="md:hidden absolute left-0 w-12 h-12 bg-purple-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">3</div>
+                        <div class="bg-white p-6 rounded-xl shadow flex-1 ml-16 md:ml-0 border-l-4 border-purple-500">
+                            <h4 class="text-xl font-bold text-purple-500 mb-2">本機深度處理 (Antigravity CLI)</h4>
+                            <p class="text-slate-600">本機電腦的 Drive 同步軟體將檔案同步下來。本機監控程式偵測到新檔案，啟動 Antigravity CLI 進行專業領域（如法規、立院回應）的 RAG 檢索，並生成回覆草稿與文件存回雲端。</p>
+                        </div>
+                    </div>
+
+                    <!-- Step 4 -->
+                    <div class="relative flex flex-col md:flex-row gap-6 md:items-center">
+                        <div class="hidden md:flex flex-col items-center justify-center z-10 w-16">
+                            <div class="w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">4</div>
+                        </div>
+                        <div class="md:hidden absolute left-0 w-12 h-12 bg-green-500 text-white rounded-full flex items-center justify-center font-bold text-xl shadow-md z-10">4</div>
+                        <div class="bg-white p-6 rounded-xl shadow flex-1 ml-16 md:ml-0 border-l-4 border-green-500">
+                            <h4 class="text-xl font-bold text-green-500 mb-2">人工檢核與發送 (Human-in-the-loop)</h4>
+                            <p class="text-slate-600">人員於「待審核區」檢視 AI 撰寫的信件與附件，確認無誤後移至「已核准」目錄，由系統自動回信給原寄件者，完成自動化閉環。</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+
+        <!-- 實作步驟 -->
+        <section id="hands-on" class="space-y-8 pt-8">
+            <div class="text-center mb-12">
+                <span class="text-accent font-bold tracking-wider uppercase text-sm mb-2 block">Hands-on Lab</span>
+                <h2 class="text-3xl font-bold text-slate-800 mb-4">90 分鐘實作挑戰</h2>
+                <div class="w-24 h-1 bg-accent mx-auto rounded-full"></div>
+            </div>
+
+            <!-- Lab 1 -->
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-700"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm mr-2">Lab 1</span> 設定 Gemini App 排程</h3>
+                </div>
+                <div class="p-6">
+                    <p class="mb-4 text-slate-600">拿起您的手機開啟 Gemini App，利用「排定的動作」建立一個每日排程：</p>
+                    <div class="bg-blue-50 p-4 rounded-lg border-l-4 border-blue-400 mb-4">
+                        <strong><i class="fa-solid fa-lightbulb text-yellow-500 mr-2"></i> Prompt 提示詞範例：</strong><br>
+                        <span class="text-slate-700 font-mono mt-2 block">「每天早上 9 點，請檢查我的未讀信件，將信件分類（例如：立法院業務、資安管理等）、摘要主旨、寄件者、日期，新增一行資料到我 Google Drive 裡名為『未讀信件列表』的 Google 試算表中。」</span>
+                    </div>
+                    <ul class="list-disc pl-5 text-slate-600 space-y-2">
+                        <li>確保 Gemini 已經開啟 Workspace 擴充功能權限。</li>
+                        <li>這會自動在指定時間，將您的信件轉換為結構化資料寫入 Sheet。</li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Lab 2 -->
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-700"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm mr-2">Lab 2</span> 串接 Google Sheet 與 GAS 自動搬檔</h3>
+                </div>
+                <div class="p-6">
+                    <p class="mb-4 text-slate-600">開啟網頁版 Google 試算表，點擊上方選單 <strong>擴充功能 > Apps Script</strong>，將以下程式碼貼上：</p>
+                    
+                    <div class="relative bg-[#1e1e1e] rounded-xl overflow-hidden shadow-inner">
+                        <div class="flex justify-between items-center bg-gray-800 px-4 py-2">
+                            <span class="text-xs text-gray-400 font-mono">Code.gs</span>
+                            <button id="copyBtn1" onclick="copyCode('copyBtn1', 'codeBlock1')" class="text-xs bg-gray-700 hover:bg-gray-600 text-white px-3 py-1 rounded transition">
+                                <i class="fa-regular fa-copy mr-1"></i> 複製程式碼
+                            </button>
+                        </div>
+                        <pre id="codeBlock1" class="p-4 text-sm text-gray-300 overflow-x-auto font-mono">function onSheetChange(e) {
+  // 1. 確保是新增資料引起的變動
+  if (!e || (e.changeType !== 'EDIT' && e.changeType !== 'INSERT_ROW')) return;
+
+  var sheet = SpreadsheetApp.getActiveSpreadsheet().getActiveSheet();
+  var lastRow = sheet.getLastRow();
+  
+  // 避免重複執行，檢查 E 欄狀態
+  var status = sheet.getRange(lastRow, 5).getValue();
+  if (status === "已處理") return; 
+  
+  // 取得最新一筆的資料 (假設 A=類型, B=主旨, C=寄件者)
+  var type = sheet.getRange(lastRow, 1).getValue();
+  var subject = sheet.getRange(lastRow, 2).getValue();
+  
+  // 2. 執行檔案搬移 (DriveApp)
+  var targetFolderName = "gmail工作區";
+  var folderIterator = DriveApp.getFoldersByName(targetFolderName);
+  var targetFolder = folderIterator.hasNext() ? folderIterator.next() : DriveApp.createFolder(targetFolderName);
+  
+  var rootFolder = DriveApp.getRootFolder();
+  var safeSubject = subject.toString().replace(/'/g, ""); 
+  var filesIterator = rootFolder.searchFiles("title contains '" + safeSubject + "'");
+  
+  var movedCount = 0;
+  while (filesIterator.hasNext()) {
+    var file = filesIterator.next();
+    file.moveTo(targetFolder);
+    movedCount++;
+  }
+
+  // 3. 發送 Email (MailApp)
+  var emailAddress = Session.getActiveUser().getEmail(); // 寄給自己
+  var emailSubject = "【系統通知】收到新信件並已搬移檔案：" + subject;
+  var message = "系統已自動處理新信件：
+
+" +
+                "信件類型：" + type + "
+" +
+                "信件主旨：" + subject + "
+" +
+                "已搬移相關檔案數量：" + movedCount + " 個。
+
+" +
+                "請前往本機的同步資料夾查看，並啟動 antigravity cli 進行後續處理。";
+                
+  MailApp.sendEmail(emailAddress, emailSubject, message);
+  
+  // 4. 標記為已處理
+  sheet.getRange(lastRow, 5).setValue("已處理");
+}</pre>
+                    </div>
+                    
+                    <div class="mt-6 bg-yellow-50 p-4 rounded-lg border-l-4 border-yellow-400">
+                        <strong class="text-yellow-800"><i class="fa-solid fa-triangle-exclamation mr-1"></i> 關鍵步驟：設定安裝型觸發條件</strong>
+                        <p class="text-sm text-yellow-700 mt-1">程式碼貼上儲存後，務必點擊左側「時鐘圖示」，新增觸發條件，選擇活動類型為 <strong>「變更時 (On change)」</strong>，並完成權限審查。</p>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Lab 3 -->
+            <div class="bg-white border border-slate-200 rounded-2xl overflow-hidden shadow-sm">
+                <div class="bg-slate-50 px-6 py-4 border-b border-slate-200 flex items-center justify-between">
+                    <h3 class="text-lg font-bold text-slate-700"><span class="bg-blue-100 text-blue-700 px-2 py-1 rounded text-sm mr-2">Lab 3</span> 本機落地體驗：Antigravity CLI</h3>
+                </div>
+                <div class="p-6">
+                    <p class="mb-4 text-slate-600">最後一哩路，回到我們的辦公室電腦前：</p>
+                    <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
+                            <i class="fa-solid fa-folder-tree text-3xl text-gray-400 mb-2"></i>
+                            <h5 class="font-bold text-gray-700">1. 本機同步</h5>
+                            <p class="text-xs text-gray-500 mt-2">安裝 Google Drive 電腦版，確保「gmail工作區」資料夾已出現在您的電腦中。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
+                            <i class="fa-solid fa-terminal text-3xl text-gray-400 mb-2"></i>
+                            <h5 class="font-bold text-gray-700">2. 啟動 Antigravity</h5>
+                            <p class="text-xs text-gray-500 mt-2">開啟命令列工具，監控該資料夾。讓 AI 直接在電腦內閱讀剛下載的檔案與立法院資料庫。</p>
+                        </div>
+                        <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
+                            <i class="fa-solid fa-file-signature text-3xl text-gray-400 mb-2"></i>
+                            <h5 class="font-bold text-gray-700">3. 人工放行</h5>
+                            <p class="text-xs text-gray-500 mt-2">檢核 AI 產出的「回應稿.pdf」，將其拖曳至「已核准」資料夾，自動完成回信！</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+        </section>
+    </main>
+
+    <!-- Footer -->
+    <footer class="bg-slate-900 text-slate-400 py-8 text-center mt-12">
+        <div class="max-w-5xl mx-auto px-6">
+            <p><i class="fa-solid fa-bolt text-yellow-400"></i> Empowered by Google Ecosystem, Gemini & Antigravity CLI</p>
+            <p class="mt-2 text-sm">內部教育訓練專用網頁 | 中央氣象署工作坊</p>
+        </div>
+    </footer>
+
+</body>
+</html>
