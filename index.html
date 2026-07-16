@@ -12,6 +12,7 @@
         .gradient-bg { background: linear-gradient(135deg, #1e3a8a 0%, #0284c7 100%); }
         .glass-card { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); border: 1px solid rgba(255,255,255,0.2); }
         pre { tab-size: 4; }
+        .code-block { background: #f8fafc; border-left: 4px solid #0ea5e9; padding: 1rem; border-radius: 0.5rem; overflow-x: auto; }
     </style>
     <script>
         tailwind.config = {
@@ -118,7 +119,6 @@
             <h2 class="text-3xl font-bold text-slate-800 mb-8 text-center">自動化工作流程藍圖</h2>
             
             <div class="relative">
-                <!-- 垂直連接線 (電腦版隱藏，手機版顯示) -->
                 <div class="absolute left-6 top-8 bottom-8 w-1 bg-blue-200 md:hidden"></div>
                 
                 <div class="space-y-8">
@@ -284,16 +284,90 @@
                 </div>
                 <div class="p-6">
                     <p class="mb-4 text-slate-600">最後一哩路，回到我們的辦公室電腦前：</p>
+                    
+                    <!-- 安装说明卡片 -->
+                    <div class="bg-purple-50 rounded-xl p-6 mb-6 border border-purple-200">
+                        <h4 class="text-lg font-bold text-purple-800 mb-4 flex items-center gap-2">
+                            <i class="fa-solid fa-download"></i> 軟體安裝路徑
+                        </h4>
+                        
+                        <div class="space-y-4">
+                            <!-- Google Drive Desktop -->
+                            <div class="bg-white rounded-lg p-4 shadow-sm">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-blue-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-brands fa-google-drive text-blue-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-slate-800 mb-1">Google Drive for desktop (Windows)</h5>
+                                        <p class="text-sm text-slate-600 mb-2">官方下載路徑：</p>
+                                        <div class="code-block">
+                                            <code class="text-blue-600 font-mono text-sm">https://www.google.com/drive/download/</code>
+                                        </div>
+                                        <p class="text-sm text-slate-500 mt-2">
+                                            <strong>安裝後預設路徑：</strong><br>
+                                            <code class="text-purple-600 font-mono text-xs">C:\Users\[您的使用者名稱]\Google Drive\</code>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Antigravity IDE -->
+                            <div class="bg-white rounded-lg p-4 shadow-sm">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-purple-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-code text-purple-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-slate-800 mb-1">Antigravity IDE</h5>
+                                        <p class="text-sm text-slate-600 mb-2">官方下載路徑：</p>
+                                        <div class="code-block">
+                                            <code class="text-blue-600 font-mono text-sm">https://antigravity.ai/download</code>
+                                        </div>
+                                        <p class="text-sm text-slate-500 mt-2">
+                                            <strong>Windows 安裝後路徑：</strong><br>
+                                            <code class="text-purple-600 font-mono text-xs">C:\Program Files\Antigravity\Antigravity.exe</code>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Antigravity CLI -->
+                            <div class="bg-white rounded-lg p-4 shadow-sm">
+                                <div class="flex items-start gap-3">
+                                    <div class="w-10 h-10 bg-green-100 rounded-lg flex items-center justify-center flex-shrink-0">
+                                        <i class="fa-solid fa-terminal text-green-600 text-xl"></i>
+                                    </div>
+                                    <div>
+                                        <h5 class="font-bold text-slate-800 mb-1">Antigravity CLI</h5>
+                                        <p class="text-sm text-slate-600 mb-2">命令列工具安裝：</p>
+                                        <div class="code-block">
+                                            <code class="text-blue-600 font-mono text-sm">npm install -g @google/antigravity</code>
+                                        </div>
+                                        <p class="text-sm text-slate-500 mt-2">
+                                            <strong>全域安裝路徑：</strong><br>
+                                            <code class="text-purple-600 font-mono text-xs">C:\Users\[您的使用者名稱]\AppData\Roaming\npm\antigravity.cmd</code>
+                                        </p>
+                                        <p class="text-sm text-slate-500 mt-2">
+                                            <strong>驗證安裝：</strong><br>
+                                            <code class="text-green-600 font-mono text-xs">antigravity --version</code>
+                                        </p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
                     <div class="grid grid-cols-1 md:grid-cols-3 gap-4">
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
                             <i class="fa-solid fa-folder-tree text-3xl text-gray-400 mb-2"></i>
                             <h5 class="font-bold text-gray-700">1. 本機同步</h5>
-                            <p class="text-xs text-gray-500 mt-2">安裝 Google Drive 電腦版，確保「gmail工作區」資料夾已出現在您的電腦中。</p>
+                            <p class="text-xs text-gray-500 mt-2">安裝 Google Drive 電腦版，確保「gmail工作區」資料夾已出現在您的電腦中（預設路徑：<code class="text-blue-500">C:\Users\[您的使用者]\Google Drive\gmail工作區</code>）。</p>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
                             <i class="fa-solid fa-terminal text-3xl text-gray-400 mb-2"></i>
                             <h5 class="font-bold text-gray-700">2. 啟動 Antigravity</h5>
-                            <p class="text-xs text-gray-500 mt-2">開啟命令列工具，監控該資料夾。讓 AI 直接在電腦內閱讀剛下載的檔案與立法院資料庫。</p>
+                            <p class="text-xs text-gray-500 mt-2">開啟命令提示字元 (CMD) 或 PowerShell，導航至同步資料夾，使用 <code class="text-blue-500">antigravity</code> 命令監控該資料夾。</p>
                         </div>
                         <div class="bg-gray-50 p-4 rounded-lg border border-gray-200 text-center">
                             <i class="fa-solid fa-file-signature text-3xl text-gray-400 mb-2"></i>
