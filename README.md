@@ -6,17 +6,17 @@
 
 ### 如何啟用：
 
-1. **前往仓库设置**：
-   - 点击仓库右上角 **Settings** → **Pages**
+1. **前往倉庫設定**：
+   - 點擊倉庫右上角 **Settings** → **Pages**
 
-2. **选择部署来源**：
-   - **Branch**: 选择 `main`
-   - **Folder**: 选择 `/` (root)
+2. **選擇部署來源**：
+   - **分支**：選擇 `main`
+   - **資料夾**：選擇 `/` (根目錄)
 
-3. **保存后**，您的網站將自動部署！
+3. **儲存後**，您的網站將自動部署！
 
-### 🔗 网站地址
-部署完成後，網站將可以通過以下網址訪問：
+### 🔗 網站網址
+部署完成後，網站將可以透過以下網址存取：
 
 ```
 https://oceanicdayi.github.io/cwa_gws_demo/
@@ -26,9 +26,9 @@ https://oceanicdayi.github.io/cwa_gws_demo/
 - **index.html** - 工作坊主頁面（包含完整的自動化流程藍圖）
 - **工作流程** - 使用 GitHub Actions 自動部署 Pages
 
-### 🛠️ 技術棧
+### 🛠️ 技術堆疊
 - HTML5 + Tailwind CSS
-- Font Awesome 圖標
+- Font Awesome 圖示
 - Google Fonts (Noto Sans TC)
 - GitHub Pages
 
